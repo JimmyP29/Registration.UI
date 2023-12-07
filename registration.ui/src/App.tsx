@@ -1,15 +1,16 @@
 import React, { useEffect } from 'react';
-import {getUsers} from './Api';
+import { getUsers } from './Api';
 import './App.css';
+import RegisterForm from './components/RegisterForm';
 
-function App() {
+const App = () => {
   useEffect(() => {
     getUsers();
   }, []);
   return (
-    <div className="App">
-      Working
-    </div>
+    <main className="App">
+      <RegisterForm />
+    </main>
   );
 }
 
