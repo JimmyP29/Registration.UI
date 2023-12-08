@@ -8,9 +8,9 @@ export const getUsers = async () => {
         method: 'GET',
         mode: 'cors'
     }).then((response) => response.json())
-        .then(res => { result = [...res]; });
+        .then(data => { result = [...data]; });
 
-    return result
+    return result;
 }
 
 export const registerUser = async (user: UserDTO) => {
