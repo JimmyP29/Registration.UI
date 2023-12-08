@@ -4,6 +4,9 @@ import './App.css';
 import RegisterForm from './components/RegisterForm';
 import { LoginDTO, UserDTO } from './models/types';
 import LoginForm from './components/LoginForm';
+import Button, { ButtonType } from './components/shared/Button';
+import { RETRIEVE_USERS } from './constants';
+import { updateNonNullChain } from 'typescript';
 
 const App = () => {
   // useEffect(() => {
@@ -27,6 +30,9 @@ const App = () => {
   const handleRegisterOnSubmit = async (event: any, user: UserDTO) => {
     event.preventDefault();
 
+    const { username, email, password } = user;
+    if (!username && !email && !password) return null;
+
     await registerUser(user);
   }
 
@@ -34,6 +40,12 @@ const App = () => {
     event.preventDefault();
 
     if (login.username && login.password) await loginUser(login);
+  }
+
+  const handleRetrieveUsersOnClick = async () => {
+    //const blah = await getUsers();
+    // console.log(blah)
+    await getUsers();
   }
 
   return (
@@ -59,7 +71,13 @@ const App = () => {
         />
       </section>
       <section>
-        <article></article>
+        <article>
+          <Button
+            type={ButtonType.BUTTON}
+            value={RETRIEVE_USERS}
+            onClick={handleRetrieveUsersOnClick}
+          />
+        </article>
       </section>
     </main>
   );

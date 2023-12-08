@@ -10,8 +10,10 @@ export const getUsers = async () => {
         if (!response.ok) {
             throw new Error(JSON.stringify(response.json()))
         }
+        const blah = response.json()
+        console.log(blah)
 
-        return response.json();
+        return blah
     });
 }
 

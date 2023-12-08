@@ -15,7 +15,7 @@ const Button = ({ type, value, onClick }: Props) => {
 interface Props {
     type: ButtonType;
     value: string;
-    onClick?: () => void;
+    onClick?: (event: any) => void;
 }
 
 export default Button;

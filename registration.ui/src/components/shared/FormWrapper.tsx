@@ -5,14 +5,15 @@ import TextInput from "./TextInput";
 
 const FormWrapper = ({ handleFormOnSubmit, name, children }: Props) => {
     return (
-        <form method="POST" onClick={handleFormOnSubmit}>
+        <form method="POST">
             <fieldset>
                 <legend>{name}</legend>
                 {children}
             </fieldset>
             <Button
-                type={ButtonType.SUBMIT}
+                type={ButtonType.BUTTON}
                 value={name}
+                onClick={handleFormOnSubmit}
             />
         </form>
     );
@@ -25,7 +26,7 @@ export const renderForm = (formFields: FormField[]) => formFields.map(({
     value,
     handleOnChange
 }) => (
-    <p>
+    <p key={identifier}>
         <Label name={identifier} htmlFor={identifier} />
         <TextInput
             id={`${formName}-${identifier}`}
