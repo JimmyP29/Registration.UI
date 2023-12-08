@@ -25,7 +25,6 @@ const App = () => {
   const handleLoginUsernameValue = (enteredText: string) => setLoginUsernameValue(enteredText);
   const handleLoginPasswordValue = (enteredText: string) => setLoginPasswordValue(enteredText);
 
-
   const handleRegisterOnSubmit = async (event: any, user: UserDTO) => {
     event.preventDefault();
 
