@@ -4,10 +4,18 @@ import Label from "./shared/Label";
 import TextInput, { TextInputType } from "./shared/TextInput";
 import { UserDTO } from "../Types";
 
-const RegisterForm = ({ handleOnSubmit }: Props) => {
-    const [usernameValue, setUsernameValue] = useState('');
-    const [emailValue, setEmailValue] = useState('');
-    const [passwordValue, setPasswordValue] = useState('');
+const RegisterForm = ({
+    usernameValue,
+    emailValue,
+    passwordValue,
+    handleUsernameValue,
+    handleEmailValue,
+    handlePasswordValue,
+    handleOnSubmit,
+}: Props) => {
+    // const [usernameValue, setUsernameValue] = useState('');
+    // const [emailValue, setEmailValue] = useState('');
+    // const [passwordValue, setPasswordValue] = useState('');
 
     const username = 'Username';
     const email = 'Email';
@@ -39,15 +47,33 @@ const RegisterForm = ({ handleOnSubmit }: Props) => {
                 <legend>Register Form</legend>
                 <p>
                     <Label name={username} htmlFor={username} />
-                    <TextInput id={username} type={TextInputType.TEXT} name={username} value={usernameValue} handleOnChange={setUsernameValue} />
+                    <TextInput
+                        id={username}
+                        type={TextInputType.TEXT}
+                        name={username}
+                        value={usernameValue}
+                        handleOnChange={handleUsernameValue}
+                    />
                 </p>
                 <p>
                     <Label name={email} htmlFor={email} />
-                    <TextInput id={email} type={TextInputType.TEXT} name={email} value={emailValue} handleOnChange={setEmailValue} />
+                    <TextInput
+                        id={email}
+                        type={TextInputType.TEXT}
+                        name={email}
+                        value={emailValue}
+                        handleOnChange={handleEmailValue}
+                    />
                 </p>
                 <p>
                     <Label name={password} htmlFor={password} />
-                    <TextInput id={password} type={TextInputType.PASSWORD} name={password} value={passwordValue} handleOnChange={setPasswordValue} />
+                    <TextInput
+                        id={password}
+                        type={TextInputType.PASSWORD}
+                        name={password}
+                        value={passwordValue}
+                        handleOnChange={handlePasswordValue}
+                    />
                 </p>
             </fieldset>
             <Button
@@ -59,6 +85,12 @@ const RegisterForm = ({ handleOnSubmit }: Props) => {
 }
 
 interface Props {
+    usernameValue: string;
+    emailValue: string;
+    passwordValue: string;
+    handleUsernameValue: (enteredText: string) => void;
+    handleEmailValue: (enteredText: string) => void;
+    handlePasswordValue: (enteredText: string) => void;
     handleOnSubmit: (event: any, userDTO: UserDTO) => void;
 }
 

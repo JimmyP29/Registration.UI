@@ -8,16 +8,33 @@ const App = () => {
   // useEffect(() => {
   //   getUsers();
   // }, []);
-  const [userDTO, setUserDto] = useState<UserDTO>();
+  const [registerUsernameValue, setRegisterUsernameValue] = useState('');
+  const [registerEmailValue, setRegisterEmailValue] = useState('');
+  const [registerPasswordValue, setRegisterPasswordValue] = useState('');
 
-  const handleRegisterOnSubmit = (event: any, user: UserDTO) => {
+  //const [userDTO, setUserDto] = useState<UserDTO>();
+
+  const handleRegisterUsernameValue = (enteredText: string) => setRegisterUsernameValue(enteredText);
+  const handleRegisterEmailValue = (enteredText: string) => setRegisterEmailValue(enteredText);
+  const handleRegisterPasswordValue = (enteredText: string) => setRegisterPasswordValue(enteredText);
+
+
+  const handleRegisterOnSubmit = async (event: any, user: UserDTO) => {
     event.preventDefault();
     console.log(user);
-    registerUser(user);
+    await registerUser(user);
   }
   return (
     <main className="App">
-      <RegisterForm handleOnSubmit={handleRegisterOnSubmit} />
+      <RegisterForm
+        usernameValue={registerUsernameValue}
+        emailValue={registerEmailValue}
+        passwordValue={registerPasswordValue}
+        handleUsernameValue={handleRegisterUsernameValue}
+        handleEmailValue={handleRegisterEmailValue}
+        handlePasswordValue={handleRegisterPasswordValue}
+        handleOnSubmit={handleRegisterOnSubmit}
+      />
     </main>
   );
 }
