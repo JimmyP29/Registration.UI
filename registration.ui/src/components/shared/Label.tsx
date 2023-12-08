@@ -1,5 +1,5 @@
 const Label = ({ name, htmlFor }: Props) => {
-    return (<label htmlFor={htmlFor} > {name}</label >);
+    return (<label htmlFor={htmlFor} aria-label={name}>{name}</label >);
 }
 
 interface Props {

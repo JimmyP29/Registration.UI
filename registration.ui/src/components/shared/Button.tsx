@@ -3,19 +3,19 @@ export enum ButtonType {
     BUTTON = 'button',
 }
 
-const Button = ({ type, value, callback }: Props) => {
+const Button = ({ type, value, onClick }: Props) => {
     return (
         type === ButtonType.SUBMIT ?
-            (<button type={type}>{value}</button>)
+            (<button type={type} aria-label={value}>{value}</button>)
             :
-            (<button type={type} onClick={callback}>{value}</button>)
+            (<button type={type} aria-label={value} onClick={onClick}>{value}</button>)
     );
 }
 
 interface Props {
     type: ButtonType;
     value: string;
-    callback?: () => void;
+    onClick?: () => void;
 }
 
 export default Button;
