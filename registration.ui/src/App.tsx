@@ -16,6 +16,7 @@ const App = () => {
   const [loginPasswordValue, setLoginPasswordValue] = useState('');
 
   const [users, setUsers] = useState<UserDTO[]>([]);
+  const [isRetriveUserButtonVisible, setIsRetrieveUserButtonVisible] = useState(false);
   const [isUserDisplayVisible, setIsUserDisplayVisible] = useState(false);
 
   const handleRegisterUsernameValue = (enteredText: string) => setRegisterUsernameValue(enteredText);
@@ -32,19 +33,29 @@ const App = () => {
     if (!username && !email && !password) return null;
 
     await registerUser(user);
+
+    setRegisterUsernameValue('');
+    setRegisterEmailValue('');
+    setRegisterPasswordValue('');
   }
 
   const handleLoginSubmit = async (event: any, login: LoginDTO) => {
     event.preventDefault();
 
-    if (login.username && login.password) await loginUser(login);
+    if (login.username && login.password) {
+      await loginUser(login);
+
+      setIsRetrieveUserButtonVisible(true);
+      setLoginUsernameValue('');
+      setLoginPasswordValue('');
+    }
   }
 
   const handleRetrieveUsersOnClick = async () => {
-    const users = await getUsers();
+    const retrievedUsers = await getUsers();
 
-    if (users.length > 0) {
-      setUsers(users);
+    if (retrievedUsers.length > 0) {
+      setUsers(retrievedUsers);
       setIsUserDisplayVisible(true);
     }
 
@@ -73,19 +84,23 @@ const App = () => {
           handleOnSubmit={handleLoginSubmit}
         />
       </section>
-      <section>
-        <article>
-          <Button
-            type={ButtonType.BUTTON}
-            value={RETRIEVE_USERS}
-            onClick={handleRetrieveUsersOnClick}
-          />
-        </article>
-        {
-          isUserDisplayVisible &&
-          <UserDisplay users={users} />
-        }
-      </section>
+      {
+        isRetriveUserButtonVisible &&
+        <section>
+          <article>
+            <Button
+              type={ButtonType.BUTTON}
+              value={RETRIEVE_USERS}
+              onClick={handleRetrieveUsersOnClick}
+            />
+          </article>
+          {
+            isUserDisplayVisible &&
+            <UserDisplay users={users} />
+          }
+        </section>
+      }
+
     </main>
   );
 }
