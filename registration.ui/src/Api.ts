@@ -3,18 +3,14 @@ import { LoginDTO, UserDTO } from "./models/types";
 const DOMAIN = 'https://localhost:7185';
 
 export const getUsers = async () => {
+    let result: UserDTO[] = [];
     await fetch(`${DOMAIN}/users`, {
         method: 'GET',
         mode: 'cors'
-    }).then((response) => {
-        if (!response.ok) {
-            throw new Error(JSON.stringify(response.json()))
-        }
-        const blah = response.json()
-        console.log(blah)
+    }).then((response) => response.json())
+        .then(res => { result = [...res]; });
 
-        return blah
-    });
+    return result
 }
 
 export const registerUser = async (user: UserDTO) => {

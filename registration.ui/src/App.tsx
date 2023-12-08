@@ -6,7 +6,6 @@ import { LoginDTO, UserDTO } from './models/types';
 import LoginForm from './components/LoginForm';
 import Button, { ButtonType } from './components/shared/Button';
 import { RETRIEVE_USERS } from './constants';
-import { updateNonNullChain } from 'typescript';
 
 const App = () => {
   // useEffect(() => {
@@ -43,9 +42,10 @@ const App = () => {
   }
 
   const handleRetrieveUsersOnClick = async () => {
-    //const blah = await getUsers();
-    // console.log(blah)
-    await getUsers();
+
+    const users = await getUsers();
+    console.log(users)
+
   }
 
   return (
