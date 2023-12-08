@@ -1,49 +1,47 @@
 # Registration.UI
-A small SPA written in React and Typescript
+A small SPA written in React and Typescript. As with the API project please treat this as a WIP. The solution does work, albeit without Authentication as mentioned in the `Registration.API` README. I wanted to keep to the brief so there is no styling or field validation. The test coverage is also lower than I would deem acceptable in a real life scenario.
 
 
 ## Setting Up
-This project relies on `Registration.API` running first so if you haven't got that working yet then please read the `README` [here](https://github.com/JimmyP29/Registration.API) first.
+__This project relies on `Registration.API` running first so if you haven't got that working yet then please read the `README` [here](https://github.com/JimmyP29/Registration.API) first.__
 
-Assuming that is running fine then once cloned down, please cd into `registration.ui/` and run the following
+Assuming the API is running fine then once cloned down, please cd into `registration.ui/` and run the following
 
 - `npm i`
-- `npm start`
+- `npm start` The SPA should open in a browser automatically on port 3000. 
 - `npm test` to run the very small collection of tests that have been written.
 
 ## How to use
 
 ### Registration
-![Registration](https://github.com/JimmyP29/Registration.API/blob/master/assets/No_Users.gif)
+![Registration](https://github.com/JimmyP29/Registration.UI/blob/master/assets/UI%20-%20Register.gif)
 
 ### Login 
-![Login](https://github.com/JimmyP29/Registration.API/blob/master/assets/Register_User.gif)
+![Login](https://github.com/JimmyP29/Registration.UI/blob/master/assets/UI%20-%20Login.gif)
 
 ### Retrieve Users
-![Retrieve_Users](https://github.com/JimmyP29/Registration.API/blob/master/assets/Get_Users_with_User.gif)
-
-### `LoginUser` (Sad Path)
-![LoginUser_sad_path](https://github.com/JimmyP29/Registration.API/blob/master/assets/Login_sad_path.gif)
-
-### `LoginUser` (Happy Path)
-![LoginUser_happy_path](https://github.com/JimmyP29/Registration.API/blob/master/assets/Login_happy_path.gif)
+![Retrieve_Users](https://github.com/JimmyP29/Registration.UI/blob/master/assets/UI%20-%20Retrieve%20Users.gif)
 
 ## What I have done
+As asked for in the brief, I have created a SPA using `create-react-app` with a Typescript template. From here I have created a UI that uses Semantic HTML and aria for A11y. It consists of 2 forms that communicate with the API using an api layer (`API.ts`), using DTOs that can be found in `models/types.d.ts`. It also has a button which will appear once the Login button has been pressed, simulating that the User in question would be Authenticated on the next button click with the token that is returned. Pressing the button will simply display the Users in a User Display, again - nothing pretty.
 
+The parent components themselves make use of reusable components found in the `components/shared` folder. Some of these also provide some utility methods and/or enums which can be imported where needed to control them with.
 
-## Where this needs improvement
-I know that the purpose of this test was to evaluate coding style, approach and decision-making abilities, so I hope you will forgive some quite glaring ommissions and accept my explanation for them here instead. This is all in the interests of time.
+I have written 3 simple tests just so there was something there. 
 
-- __Testing__: There are no tests in this project. I would plan to have tests for the service layer and repository layers which would mock the dependencies expected of them that have been passed into the constructors. I would test both the happy and sad paths for each method.
-- __Validation__: There is also no real validation for the values coming in. I would add this to check for things such as empty strings and valid email address formatting.
-- __Mapping__: On line 21 of the `RegistrationSerice` I use a foreach loop to manually map from a `User` object to a `UserDTO` object. I would prefer to use something such as AutoMapper.
-- __Security__: There are 2 security concerns here that would be dangerous in a real application, that being the storage of the password as plaintext. I would hash the string within the registration process and store the hash. The second is storing the Token Key within `appsettings.json`. I named it as such to get the point across but IRL this would be stored completely outside the application and passed in using variables.
-- __Authorization__: There is no Authorization as requested for the GetUsers endpoint, I spent some time trying to implement IdentityUser after I had created my own User classes and implemented the business logic. I admit that when I was researching the implementation I realised that that was probably a mistake and I should have thought about it the other way around. This is because I could have used the IdentityUser instead and got a lot of stuff for free, including the Authrization/Authentication. My only concern here is that I couldn't see how to do this using In-Memroy database and not a SQL DB instance.
+All strings used are kept in the `constants.ts` file, these are then reused where needed including within the tests, keeping them resilient against future changes. 
+
+## Where this needs improvement in the short term
+- __Authentication__: The elephant in the room is that the requirement for the retrival of users being suthenticated simply isn't there. This was due to the issue I have described in the backend and time. I figured that What I have produced is a good compromise given these constraints. So when the user has logged in, the token that has been sent back would be passed to the bearer header in the `GET` request. This would then mean that the API would accept the token as valid and allow the request through and returning the response as a 201. If this we not the case then we would expect a 401 response back.
+- __Form Validation__: I have implemented these forms using vanilla html forms and component state. If this was going to be heading to production I would prefer to use something like [React Hook Form](https://www.react-hook-form.com/) which I have used before to give us client side validation as well as error messaging using something like Yup.
+- __Testing__: The test coverage would need to be a lot more complete, I would like to have tests for each of the form components as well as the `FormWrapper` component, where I would use a `display.each()` block for testing the dynamic rendering of the `renderForm()` function. Mocking would be used where necessary for API calls, and happy + sad paths would be tested to make sure errors were handled gracefully.
+-__Styling__: Clearly this would benfit from some responsive styling, I am mostly used to using `StyledComponents` which would be contained within each component file.  
+
 
 ## Future Considerations
-- __Scalability__: 
-- __Testability__: 
-- __Maintainability__: 
-- __Readability__: 
-- __Reusability__: 
+- __Scalability__: If this was redesigned to have multiple screens to display the various features it would perhaps start to make sense to use Redux ToolKit to keep the state more global to the application and removing prop drilling from the component hierarchy.
+- __Testability__: As previously mentioned, the test coverage would need to be improved, with tests covering the rendering of components, the I/O of utility functions as well as integration with the backend.
+- __Readability__: I think the readability is good, but again I am biased, I do think it would be good to have comments on the `Props` interface properties so they show up in Intellisense.
+- __Reusability__: I have kept the shared components separated for the most atomic components - such as Text inputs and buttons. This is so if we have Styled Components within these they are kept really modular but complete along with all that component's A11y. If we then used something like [Storybook](https://storybook.js.org/) to house them then this would encourage reuability because we can see the 'Lego bricks' that we have to play with, and what we need to build.
+- __Maintainability__: I think that adherance to all of these points would help with future maintainability, especially with Reusing shared components only - and not going rogue with we making something in html because of a lack of awareness that something already exists, this is where Storybook would be invaluable as it would not only keep the code DRY, it would be faster as well.
 
