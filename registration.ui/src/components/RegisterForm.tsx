@@ -1,8 +1,7 @@
-import { useState } from "react";
-import Button, { ButtonType } from "./shared/Button";
-import Label from "./shared/Label";
-import TextInput, { TextInputType } from "./shared/TextInput";
-import { UserDTO } from "../Types";
+import { FormField, UserDTO } from "../models/types";
+import { TextInputType } from "./shared/TextInput";
+import { USERNAME, EMAIL, PASSWORD, REGISTER } from "../constants";
+import FormWrapper, { renderForm } from "./shared/FormWrapper";
 
 const RegisterForm = ({
     usernameValue,
@@ -13,74 +12,39 @@ const RegisterForm = ({
     handlePasswordValue,
     handleOnSubmit,
 }: Props) => {
-    // const [usernameValue, setUsernameValue] = useState('');
-    // const [emailValue, setEmailValue] = useState('');
-    // const [passwordValue, setPasswordValue] = useState('');
 
-    const username = 'Username';
-    const email = 'Email';
-    const password = 'Password';
-
-    // const handleOnChangeUsername = (enteredText: string) => {
-    //     setUsernameValue(enteredText);
-    // }
-
-    // const handleOnChangeEmail = (enteredText: string) => {
-    //     setEmailValue(enteredText);
-    // }
-
-    // const handleOnChangePassword = (enteredText: string) => {
-    //     setPasswordValue(enteredText);
-    // }
+    const formFields = [
+        {
+            formName: REGISTER,
+            identifier: USERNAME,
+            inputType: TextInputType.TEXT,
+            value: usernameValue,
+            handleOnChange: handleUsernameValue,
+        } as FormField,
+        {
+            formName: REGISTER,
+            identifier: EMAIL,
+            inputType: TextInputType.TEXT,
+            value: emailValue,
+            handleOnChange: handleEmailValue,
+        } as FormField,
+        {
+            formName: REGISTER,
+            identifier: PASSWORD,
+            inputType: TextInputType.PASSWORD,
+            value: passwordValue,
+            handleOnChange: handlePasswordValue,
+        } as FormField,
+    ];
 
     const handleFormOnSubmit = (event: any) => {
-        //event.preventDefault();
         handleOnSubmit(event, { username: usernameValue, email: emailValue, password: passwordValue } as UserDTO);
-        // setUsernameValue('');
-        // setEmailValue('');
-        // setPasswordValue('');
     }
 
     return (
-        <form method="POST" onClick={handleFormOnSubmit}>
-            <fieldset>
-                <legend>Register Form</legend>
-                <p>
-                    <Label name={username} htmlFor={username} />
-                    <TextInput
-                        id={username}
-                        type={TextInputType.TEXT}
-                        name={username}
-                        value={usernameValue}
-                        handleOnChange={handleUsernameValue}
-                    />
-                </p>
-                <p>
-                    <Label name={email} htmlFor={email} />
-                    <TextInput
-                        id={email}
-                        type={TextInputType.TEXT}
-                        name={email}
-                        value={emailValue}
-                        handleOnChange={handleEmailValue}
-                    />
-                </p>
-                <p>
-                    <Label name={password} htmlFor={password} />
-                    <TextInput
-                        id={password}
-                        type={TextInputType.PASSWORD}
-                        name={password}
-                        value={passwordValue}
-                        handleOnChange={handlePasswordValue}
-                    />
-                </p>
-            </fieldset>
-            <Button
-                type={ButtonType.SUBMIT}
-                value="Register"
-            />
-        </form>
+        <FormWrapper handleFormOnSubmit={handleFormOnSubmit} name={REGISTER}>
+            {renderForm(formFields)}
+        </FormWrapper>
     );
 }
 

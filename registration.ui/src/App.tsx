@@ -1,8 +1,8 @@
-import React, { useEffect, useState } from 'react';
-import { getUsers, registerUser } from './Api';
+import { useEffect, useState } from 'react';
+import { getUsers, loginUser, registerUser } from './Api';
 import './App.css';
 import RegisterForm from './components/RegisterForm';
-import { UserDTO } from './Types';
+import { LoginDTO, UserDTO } from './models/types';
 import LoginForm from './components/LoginForm';
 
 const App = () => {
@@ -16,8 +16,6 @@ const App = () => {
   const [loginUsernameValue, setLoginUsernameValue] = useState('');
   const [loginPasswordValue, setLoginPasswordValue] = useState('');
 
-  //const [userDTO, setUserDto] = useState<UserDTO>();
-
   const handleRegisterUsernameValue = (enteredText: string) => setRegisterUsernameValue(enteredText);
   const handleRegisterEmailValue = (enteredText: string) => setRegisterEmailValue(enteredText);
   const handleRegisterPasswordValue = (enteredText: string) => setRegisterPasswordValue(enteredText);
@@ -28,13 +26,14 @@ const App = () => {
 
   const handleRegisterOnSubmit = async (event: any, user: UserDTO) => {
     event.preventDefault();
-    console.log(user);
+
     await registerUser(user);
   }
 
-  const handleLoginSubmit = async (event: any, username: string, password: string) => {
+  const handleLoginSubmit = async (event: any, login: LoginDTO) => {
     event.preventDefault();
-    console.log('boom')
+
+    if (login.username && login.password) await loginUser(login);
   }
 
   return (
