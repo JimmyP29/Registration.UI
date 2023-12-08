@@ -1,22 +1,22 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { getUsers, loginUser, registerUser } from './Api';
-import './App.css';
 import RegisterForm from './components/RegisterForm';
 import { LoginDTO, UserDTO } from './models/types';
 import LoginForm from './components/LoginForm';
 import Button, { ButtonType } from './components/shared/Button';
 import { RETRIEVE_USERS } from './constants';
+import UserDisplay from './components/UserDisplay';
 
 const App = () => {
-  // useEffect(() => {
-  //   getUsers();
-  // }, []);
   const [registerUsernameValue, setRegisterUsernameValue] = useState('');
   const [registerEmailValue, setRegisterEmailValue] = useState('');
   const [registerPasswordValue, setRegisterPasswordValue] = useState('');
 
   const [loginUsernameValue, setLoginUsernameValue] = useState('');
   const [loginPasswordValue, setLoginPasswordValue] = useState('');
+
+  const [users, setUsers] = useState<UserDTO[]>([]);
+  const [isUserDisplayVisible, setIsUserDisplayVisible] = useState(false);
 
   const handleRegisterUsernameValue = (enteredText: string) => setRegisterUsernameValue(enteredText);
   const handleRegisterEmailValue = (enteredText: string) => setRegisterEmailValue(enteredText);
@@ -42,10 +42,14 @@ const App = () => {
   }
 
   const handleRetrieveUsersOnClick = async () => {
-
     const users = await getUsers();
-    console.log(users)
 
+    if (users.length > 0) {
+      setUsers(users);
+      setIsUserDisplayVisible(true);
+    }
+
+    return null;
   }
 
   return (
@@ -78,6 +82,10 @@ const App = () => {
             onClick={handleRetrieveUsersOnClick}
           />
         </article>
+        {
+          isUserDisplayVisible &&
+          <UserDisplay users={users} />
+        }
       </section>
     </main>
   );
